@@ -4,7 +4,7 @@ source $BIN_DIR/utils
 
 if [[ -f nodepy.json ]]; then
   # Measure that we're using Node.py PM.
-  mcount "tool.nodepy"
+  mcount "tool.nodepy-install"
 
   # Ensure that we have nodepy installed. A specific version could
   # have already been installed by the pip-install step.

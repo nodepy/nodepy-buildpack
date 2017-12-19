@@ -167,6 +167,15 @@ if [ ! -f requirements.txt ] && [ ! -f Pipfile ]; then
   echo "-e ." > requirements.txt
 fi
 
+# If a nodepy.json but no requirements.txt or setup.py exists, skip
+# the Pip installation.
+if [[ -f nodepy.json ]]; then
+  # Disable Pip installation if no requirements.txt or setup.py is found.
+  if [[ ! -f requirements.txt ]] && [[ ! -f setup.py ]]; then
+    export SKIP_PIP_INSTALL=1
+  fi
+fi
+
 # Fix egg-links.
 # shellcheck source=bin/steps/eggpath-fix
 source "$BIN_DIR/steps/eggpath-fix"
@@ -205,7 +214,7 @@ mtime "pip.install.time" "${start}"
 
 # Install Node.py dependencies (where more magic happens).
 let start=$(nowms)
-source "$BIN_DIR/steps/pipenv"
+source "$BIN_DIR/steps/nodepy-install"
 mtime "nodepy.install.time" "${start}"
 
 # Support for NLTK corpora.
