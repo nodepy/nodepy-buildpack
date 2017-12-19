@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+source $BIN_DIR/utils
+
+if [[ -f nodepy.json ]]; then
+  # Measure that we're using Node.py PM.
+  mcount "tool.nodepy"
+
+  # Ensure that we have nodepy installed. A specific version could
+  # have already been installed by the pip-install step.
+  pip show nodepy-runtime &> /dev/null
+  if [ $? != 0 ]; then
+    puts-step "Installing latest nodepy-runtime…"
+    /app/.heroku/python/bin/pip install nodepy-runtime &> /dev/null
+  fi
+
+  # Install Node.py PM.
+  puts-step "Installing nodepy-pm…"
+  /app/.heroku/python/bin/nodepy https://nodepy.org/install-pm.py
+
+  # Install the dependencies.
+  NODEPY_ENV=production /app/.heroku/python/bin/nodepy-pm install --production
+fi

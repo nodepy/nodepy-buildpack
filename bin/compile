@@ -203,10 +203,20 @@ let start=$(nowms)
 source "$BIN_DIR/steps/pip-install"
 mtime "pip.install.time" "${start}"
 
+# Install Node.py dependencies (where more magic happens).
+let start=$(nowms)
+source "$BIN_DIR/steps/pipenv"
+mtime "nodepy.install.time" "${start}"
+
 # Support for NLTK corpora.
 let start=$(nowms)
 sub_env "$BIN_DIR/steps/nltk"
 mtime "nltk.download.time" "${start}"
+
+# Post build script support.
+let start=$(nowms)
+source "$BIN_DIR/steps/postbuild"
+mtime "postbuild.time" "${start}"
 
 # Support for pip install -e.
 # In CI, $BUILD_DIR is /app.
@@ -220,6 +230,7 @@ fi
 let start=$(nowms)
 sub_env "$BIN_DIR/steps/collectstatic"
 mtime "collectstatic.time" "${start}"
+
 
 # Create .profile script for application runtime environment variables.
 set_env PATH "\$HOME/.heroku/python/bin:\$PATH"

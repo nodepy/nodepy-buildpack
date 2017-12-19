@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+source $BIN_DIR/utils
+
+
+if [[ -f postbuild.bash ]]; then
+  mcount "tool.postbuild-bash"
+  puts-step "Running postbuild.bash…"
+  source postbuild.bash
+fi
+
+if [[ -f .heroku/postbuild.bash ]]; then
+  mcount "tool.postbuild-heroku-bash"
+  puts-step "Running .heroku/postbuild.bash…"
+  source .heroku/postbuild.bash
+fi
+
+
+if [[ -f postbuild.sh ]]; then
+  mcount "tool.postbuild-sh"
+  puts-step "Running postbuild.sh…"
+  source postbuild.bash
+fi
+
+if [[ -f .heroku/postbuild.sh ]]; then
+  mcount "tool.postbuild-heroku-sh"
+  puts-step "Running .heroku/postbuild.sh…"
+  source .heroku/postbuild.bash
+fi
+
+
+if [[ -f postbuild.py ]]; then
+  mcount "tool.postbuild-py"
+  puts-step "Running postbuild.py…"
+  /app/.heroku/python/bin/python postbuild.py
+fi
+
+if [[ -f .heroku/postbuild.py ]]; then
+  mcount "tool.postbuild-heroku-py"
+  puts-step "Running .heroku/postbuild.py…"
+  /app/.heroku/python/bin/python .heroku/postbuild.py
+fi
