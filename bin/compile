@@ -165,7 +165,7 @@ source "$BIN_DIR/steps/pipenv"
 # If no requirements.txt file given, assume `setup.py develop` is intended.
 if [ ! -f requirements.txt ] && [ ! -f Pipfile ]; then
   if [ -f nodepy.json ]; then
-    echo "" > requirements.txt
+    echo "nodepy-runtime" > requirements.txt
   else
     echo "-e ." > requirements.txt
   fi
